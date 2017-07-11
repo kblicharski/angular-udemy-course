@@ -8,5 +8,7 @@ export class ServerComponent {
   serverID = 10;
   serverStatus = 'offline';
 
-  getServerID
+  getServerStatus() {
+    return this.serverStatus;
+  }
 }
