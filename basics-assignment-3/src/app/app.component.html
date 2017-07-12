@@ -12,5 +12,12 @@
   </div>
 </div>
 <hr>
-<button (click)="displayDetails()">Display Details</button>
-<p *ngIf="detailsEnabled">Any content of your choice</p>
+<button class="btn-primary btn-default" (click)="displayDetails()">Display Details</button>
+<p *ngIf="detailsEnabled">Secret Paragraph</p>
+<p *ngFor="let click of buttonClicks"
+   [ngClass]="{whiteText: buttonClicks.length > 4}"
+   [ngStyle]="{backgroundColor: getBackgroundColor()}">
+  {{ click }}
+</p>
+
+
