@@ -9,11 +9,18 @@ export class AppComponent {
   detailsEnabled = false;
   buttonClicks = [];
 
+  // Official Solution
+  showSecret = false;
+  log = [];
+
+  onToggleDetails() {
+    this.showSecret = !this.showSecret;
+    this.log.push(this.log.length + 1);
+  }
+
   displayDetails() {
     this.detailsEnabled = !this.detailsEnabled;
     this.buttonClicks.push(Date.now());
-    console.log(Date.now());
-    console.log(this.buttonClicks.length)
   }
 
   getBackgroundColor(i) {
