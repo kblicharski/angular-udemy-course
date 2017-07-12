@@ -16,7 +16,7 @@ export class AppComponent {
     console.log(this.buttonClicks.length)
   }
 
-  getBackgroundColor() {
-    return this.buttonClicks.length > 4 ? 'blue' : '';
+  getBackgroundColor(i) {
+    return i > 3 ? 'blue' : '';
   }
 }

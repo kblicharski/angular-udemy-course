@@ -14,9 +14,9 @@
 <hr>
 <button class="btn-primary btn-default" (click)="displayDetails()">Display Details</button>
 <p *ngIf="detailsEnabled">Secret Paragraph</p>
-<p *ngFor="let click of buttonClicks"
-   [ngClass]="{whiteText: buttonClicks.length > 4}"
-   [ngStyle]="{backgroundColor: getBackgroundColor()}">
+<p *ngFor="let click of buttonClicks; let i = index"
+   [ngClass]="{whiteText: i > 3}"
+   [ngStyle]="{backgroundColor: getBackgroundColor(i)}">
   {{ click }}
 </p>
 
