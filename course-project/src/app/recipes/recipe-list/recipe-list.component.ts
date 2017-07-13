@@ -9,7 +9,8 @@ import { Recipe } from '../recipe.model';
 })
 export class RecipeListComponent implements OnInit {
   recipes: Recipe[] = [
-    new Recipe('Microwaved Potato', 'Just microwave the potato', 'https://pixabay.com/p-448613/?no_redirect')
+    new Recipe('Microwaved Potato', 'Just microwave the potato',
+      'https://cdn.pixabay.com/photo/2014/09/16/18/28/potatoes-448613_960_720.jpg')
   ];
 
   constructor() { }
