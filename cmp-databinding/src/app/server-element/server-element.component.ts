@@ -21,36 +21,36 @@ export class ServerElementComponent implements OnInit, OnChanges, DoCheck, After
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('ngOnChanges called');
+    console.log('ngOnChanges');
     console.log(changes);
   }
 
   ngOnInit() {
-    console.log('ngOnInit called');
+    console.log('ngOnInit');
   }
 
   ngDoCheck() {
-    console.log('ngDoCheck called');
+    console.log('ngDoCheck');
   }
 
   ngAfterContentInit() {
-    console.log('ngAfterContentInit called');
+    console.log('ngAfterContentInit');
   }
 
   ngAfterContentChecked() {
-    console.log('ngAfterContentChecked called');
+    console.log('ngAfterContentChecked');
   }
 
   ngAfterViewInit() {
-    console.log('ngAfterViewInit called');
+    console.log('ngAfterViewInit');
   }
 
   ngAfterViewChecked() {
-    console.log('ngAfterViewChecked called');
+    console.log('ngAfterViewChecked');
   }
 
   ngOnDestroy() {
-    console.log('ngOnDestroy called')
+    console.log('ngOnDestroy')
   }
 
 }
