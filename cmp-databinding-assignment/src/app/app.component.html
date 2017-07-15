@@ -5,10 +5,10 @@
       <ol>
         <s><li>Create three new components: GameControl, Odd and Even</li></s>
         <s><li>The GameControl Component should have buttons to start and stop the game</li></s>
-        <s></s><li>When starting the game, an event (holding a incrementing number) should get emitted
-        each second (ref = setInterval())</li>
-        <s></s><li>The event should be listenable from outside the component</li>
-        <s></s><li>When stopping the game, no more events should get emitted (clearInterval(ref))</li>
+        <s><li>When starting the game, an event (holding a incrementing number) should get emitted
+          each second (ref = setInterval())</li></s>
+        <s><li>The event should be listenable from outside the component</li></s>
+        <s><li>When stopping the game, no more events should get emitted (clearInterval(ref))</li></s>
         <s></s><li>A new Odd component should get created for every odd number emitted, the same should
         happen for the Even Component (on even numbers)</li>
         <s><li>Simply output Odd - NUMBER or Even - NUMBER in the two components</li></s>
@@ -20,7 +20,9 @@
     <div class="col-xs-12">
       <app-game-control (gameStarted)="createComponent($event)"></app-game-control>
       <hr>
-      <div *ngFor="let component of numberComponents">{{ component }}</div>
+      <div *ngFor="let component of numberComponents">
+        <app-even *ngIf="component.type === 'even'"></app-even>
+        <app-odd *ngIf="component.type === 'odd'"></app-odd>
+      </div>
     </div>
   </div>
-</div>

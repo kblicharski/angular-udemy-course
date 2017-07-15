@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./odd.component.css']
 })
 export class OddComponent {
+  type: string;
+  num: number;
 }

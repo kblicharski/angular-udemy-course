@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./even.component.css']
 })
 export class EvenComponent {
+  type: string;
+  num: number;
 }
