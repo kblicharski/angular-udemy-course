@@ -18,10 +18,9 @@
     </div>
     <hr>
     <div class="col-xs-12">
-      <app-game-control></app-game-control>
+      <app-game-control (gameStarted)="createComponent($event)"></app-game-control>
       <hr>
-      <app-even></app-even>
-      <app-odd></app-odd>
+      <div *ngFor="let component of numberComponents">{{ component }}</div>
     </div>
   </div>
 </div>

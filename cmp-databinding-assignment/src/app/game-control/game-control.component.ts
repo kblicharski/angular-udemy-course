@@ -6,18 +6,20 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./game-control.component.css']
 })
 export class GameControlComponent {
-  gameStatus = false;
+  number = 0;
+  ref;
+
   @Output() gameStarted = new EventEmitter<number>();
-
-
 
   startGame() {
     console.log('game started');
-    this.gameStatus = true;
+    this.ref = setInterval(() => {
+      this.gameStarted.emit(this.number++);
+    }, 1000);
   }
 
   stopGame() {
     console.log('game stopped');
-    this.gameStatus = false;
+    clearInterval(this.ref);
   }
 }

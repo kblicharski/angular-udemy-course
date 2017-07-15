@@ -6,4 +6,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  numberComponents: {'type': string, 'num': number}[] = [];
+
+  createComponent(input: number) {
+    if(input % 2 === 0) {
+      this.numberComponents.push({
+        type: 'even',
+        num: input
+      })
+    } else {
+      this.numberComponents.push({
+        type: 'odd',
+        num: input
+      })
+    }
+  }
 }
