@@ -7,19 +7,23 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class GameControlComponent {
   number = 0;
-  ref;
+  interval;
 
   @Output() gameStarted = new EventEmitter<number>();
 
-  startGame() {
+  onStartGame() {
     console.log('game started');
-    this.ref = setInterval(() => {
-      this.gameStarted.emit(this.number++);
-    }, 1000);
+
+    // Prevents the user from spamming many intervals and breaking the game
+    if(!this.interval) {
+      this.interval = setInterval(() => {
+        this.gameStarted.emit(this.number++);
+      }, 1000);
+    }
   }
 
-  stopGame() {
+  onStopGame() {
     console.log('game stopped');
-    clearInterval(this.ref);
+    clearInterval(this.interval);
   }
 }
