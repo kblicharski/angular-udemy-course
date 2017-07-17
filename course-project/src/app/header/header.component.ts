@@ -6,16 +6,13 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  @Output() recipesClickEvent = new EventEmitter<any>();
-  @Output() shoppingListClickEvent = new EventEmitter<any>();
+  @Output() selectionEvent = new EventEmitter<string>();
 
-  recipesClicked() {
-    console.log('recipes clicked');
-    this.recipesClickEvent.emit();
-  }
-
-  shoppingListClicked() {
-    console.log('shopping list clicked');
-    this.shoppingListClickEvent.emit();
+  onSelect(feature: string) {
+    if (feature === 'recipes') {
+      this.selectionEvent.emit(feature);
+    } else if (feature === 'shopping-list') {
+      this.selectionEvent.emit(feature);
+    }
   }
 }

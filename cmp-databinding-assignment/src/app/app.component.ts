@@ -10,7 +10,7 @@ export class AppComponent {
 
   createComponent(input: number) {
     console.log(input);
-    if(input % 2 === 0) {
+    if (input % 2 === 0) {
       this.numberComponents.push({
         type: 'even',
         num: input
