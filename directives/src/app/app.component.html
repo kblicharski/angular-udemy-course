@@ -13,6 +13,15 @@
             {{ number }}
           </li>
         </div>
+        <div *ngIf="onlyOdd">
+          <li
+            class="list-group-item"
+            *ngFor="let number of numbers">
+            <div *ngIf="number % 2 == 1">
+              {{ number }}
+            </div>
+          </li>
+        </div>
       </ul>
       <ng-template [ngIf]="onlyOdd">
         <p>Only odd</p>
