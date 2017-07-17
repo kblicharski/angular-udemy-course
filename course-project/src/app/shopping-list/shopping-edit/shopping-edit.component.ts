@@ -14,10 +14,13 @@ export class ShoppingEditComponent {
   @Output() newIngredientAdded = new EventEmitter<Ingredient>();
 
   onAddIngredient() {
-    const newIngredient = new Ingredient(this.nameInputRef.nativeElement.value,
-                                      this.amountInputRef.nativeElement.value);
+    const name = this.nameInputRef.nativeElement.value;
+    const amount = this.amountInputRef.nativeElement.value;
 
-    this.newIngredientAdded.emit(newIngredient);
+    if (name && amount) {
+      const newIngredient = new Ingredient(name, amount);
+      this.newIngredientAdded.emit(newIngredient);
+    }
   }
 
   onDeleteIngredient() {
