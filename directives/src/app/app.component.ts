@@ -8,4 +8,6 @@ import { Component } from '@angular/core';
 export class AppComponent {
   numbers = [1, 2, 3, 4, 5];
   onlyOdd = false;
+
+  value = 100;
 }

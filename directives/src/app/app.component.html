@@ -28,6 +28,12 @@
       </ng-template>
       <p appBasicHighlight>Basic highlight</p>
       <p [appBetterHighlight]="'red'" defaultColor="yellow">Better highlight</p>
+      <div [ngSwitch]="value">
+        <p *ngSwitchCase="5">Value is 5</p>
+        <p *ngSwitchCase="10">Value is 10</p>
+        <p *ngSwitchCase="100">*Value is 100</p>
+        <p *ngSwitchDefault>Value is default</p>
+      </div>
     </div>
   </div>
 </div>
