@@ -8,16 +8,16 @@ import { Ingredient } from '../../shared/ingredient.model';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent {
-  @ViewChild('nameInput') nameInput: ElementRef;
-  @ViewChild('amountInput') amountInput: ElementRef;
+  @ViewChild('nameInput') nameInputRef: ElementRef;
+  @ViewChild('amountInput') amountInputRef: ElementRef;
 
   @Output() newIngredientAdded = new EventEmitter<Ingredient>();
 
   onAddIngredient() {
-    const ingredient = new Ingredient(this.nameInput.nativeElement.value,
-                                    this.amountInput.nativeElement.value);
+    const newIngredient = new Ingredient(this.nameInputRef.nativeElement.value,
+                                      this.amountInputRef.nativeElement.value);
 
-    this.newIngredientAdded.emit(ingredient);
+    this.newIngredientAdded.emit(newIngredient);
   }
 
   onDeleteIngredient() {
