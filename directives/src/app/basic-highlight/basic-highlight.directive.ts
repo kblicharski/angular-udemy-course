@@ -4,6 +4,7 @@ import { Directive, ElementRef, OnInit } from '@angular/core';
   selector: '[appBasicHighlight]'
 })
 export class BasicHighlightDirective implements OnInit{
+
   constructor(private elementRef: ElementRef) { }
 
   ngOnInit() {
