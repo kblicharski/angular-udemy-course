@@ -9,10 +9,9 @@ import { Recipe } from '../../recipe.model';
 })
 export class RecipeItemComponent {
   @Input() recipe: Recipe;
-  @Output() recipeEmitter = new EventEmitter<Recipe>();
+  @Output() recipeEmitter = new EventEmitter<void>();
 
-  onClickRecipeDetail() {
-    console.log(`detail ${this.recipe.name}`);
-    this.recipeEmitter.emit(this.recipe)
+  onClickRecipe() {
+    this.recipeEmitter.emit()
   }
 }

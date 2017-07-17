@@ -10,12 +10,14 @@ import { Recipe } from '../recipe.model';
 export class RecipeListComponent {
   recipes: Recipe[] = [
     new Recipe('Microwaved Potato', 'Just microwave the potato',
-      'http://www.dullmensclub.com/wp-content/uploads/Potato-3.jpg')
+      'http://www.dullmensclub.com/wp-content/uploads/Potato-3.jpg'),
+    new Recipe('Ramen', 'Boil water and put it in',
+               'http://wwmenslubcmw-onetulasotopg')
   ];
 
   @Output() recipeDetailEmitter = new EventEmitter<Recipe>();
 
-  emitRecipeDetail(recipe) {
+  emitRecipeDetail(recipe: Recipe) {
     this.recipeDetailEmitter.emit(recipe)
   }
 }
