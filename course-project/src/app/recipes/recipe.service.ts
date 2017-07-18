@@ -10,9 +10,7 @@ export class RecipeService {
                'http://steamykitchen.com/wp-content/uploads/2011/04/miso-ramen-recipe-20971.jpg')
   ];
 
-  recipeSelected = new EventEmitter<Recipe>();
-
-  constructor() { }
+  recipeSelected: EventEmitter<Recipe> = new EventEmitter<Recipe>();
 
   getRecipes() {
     return this.recipes.slice();
