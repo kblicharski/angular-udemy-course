@@ -10,7 +10,6 @@
     <app-recipe-item
       *ngFor="let recipeElement of recipes"
       [recipe]="recipeElement"
-      (recipeEmitter)="emitRecipeDetail(recipeElement)"
     ></app-recipe-item>
   </div>
 </div>
