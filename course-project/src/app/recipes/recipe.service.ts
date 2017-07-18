@@ -24,8 +24,6 @@ export class RecipeService {
   }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
-    for (let i = 0; i < ingredients.length; i++) {
-      this.shoppingListService.addIngredient(ingredients[i]);
-    }
+    this.shoppingListService.addIngredients(ingredients);
   }
 }
