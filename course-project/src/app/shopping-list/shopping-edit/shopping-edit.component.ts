@@ -20,7 +20,7 @@ export class ShoppingEditComponent {
 
     if (name && amount) {
       const newIngredient = new Ingredient(name, amount);
-      this.shoppingListService.ingredientAdded.emit(newIngredient);
+      this.shoppingListService.addIngredient(newIngredient);
     }
   }
 }
