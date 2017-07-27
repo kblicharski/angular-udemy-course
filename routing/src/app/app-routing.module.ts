@@ -10,6 +10,7 @@ import { UserComponent } from './users/user/user.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthGuardService } from 'app/auth-guard.service';
 import { CanDeactivateGuardService } from './servers/edit-server/can-deactivate-guard.service';
+import { ErrorPageComponent } from 'app/error-page/error-page.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -37,7 +38,8 @@ const appRoutes: Routes = [
       }
     ]
   },
-  { path: '**', component: PageNotFoundComponent }
+  { path: 'not-found', component: ErrorPageComponent, data: {message: 'Page not found.'} },
+  { path: '**', redirectTo: '/not-found' }
 ];
 
 @NgModule({
