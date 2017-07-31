@@ -8,7 +8,7 @@ import { RecipeEditComponent } from 'app/recipes/recipe-edit/recipe-edit.compone
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/recipes', pathMatch: 'full' },
-  { path: 'shopping',
+  { path: 'shopping-list',
     component: ShoppingListComponent },
   { path: 'recipes',
     component: RecipesComponent
