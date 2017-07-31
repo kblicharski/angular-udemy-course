@@ -25,7 +25,7 @@
           <a style="cursor: pointer" (click)="sendToShoppingList()">To Shopping List</a>
         </li>
         <li>
-          <a style="cursor: pointer">Edit Recipe</a>
+          <a style="cursor: pointer" [routerLink]="['/recipes', id, 'edit']">Edit Recipe</a>
         </li>
         <li>
           <a style="cursor: pointer">Delete Recipe</a>
