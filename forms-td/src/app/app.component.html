@@ -2,7 +2,10 @@
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
       <form (ngSubmit)="onSubmit()" #f="ngForm">
-        <div id="user-data">
+        <div
+          id="user-data"
+          ngModelGroup="userData"
+          #userData="ngModelGroup">
           <div class="form-group">
             <label for="username">Username</label>
             <input
@@ -30,6 +33,7 @@
             </span>
           </div>
         </div>
+        <p *ngIf="userData.invalid && userData.touched">User data is invalid.</p>
         <div class="form-group">
           <label for="secret">Secret Questions</label>
           <select id="secret"
@@ -40,6 +44,13 @@
             <option value="teacher">Your first teacher?</option>
           </select>
         </div>
+        <div class="form-group">
+          <textarea
+            name="questionAnswer"
+            rows="3"
+            [(ngModel)]="answer"></textarea>
+        </div>
+        <p>Your reply: {{ answer }}</p>
         <button class="btn btn-primary"
                 type="submit"
                 [disabled]="f.invalid">Submit</button>
