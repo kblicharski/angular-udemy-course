@@ -6,11 +6,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
+  submitted = false;
   defaultSubscription = 'advanced';
+  user = {
+    email: '',
+    subscription: this.defaultSubscription,
+    password: ''
+  };
 
-
-  onSelect() {
-
+  onSubmit() {
+    this.submitted = true;
+    console.log(this.user);
   }
 }

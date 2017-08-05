@@ -38,8 +38,15 @@
             <option value="pro">Pro</option>
           </select>
         </div>
+        <button class="btn btn-primary">Submit</button>
       </form>
-
+      <hr>
+      <div class="row" *ngIf="submitted">
+        <p>Email: {{ user.email }}</p>
+        <p>Subscription: {{ user.subscription }}</p>
+        <p>Password: {{ user.password }}</p>
+        <button class="btn btn-default" (click)="submitted = false">Reset</button>
+      </div>
     </div>
   </div>
 </div>
