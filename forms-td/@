@@ -5,7 +5,10 @@
         <div id="user-data">
           <div class="form-group">
             <label for="username">Username</label>
-           <input type="text" id="username" class="form-control">
+            <input
+            type="text"
+            id="username"
+            class="form-control">
           </div>
           <button class="btn btn-default" type="button">Suggest an Username</button>
           <div class="form-group">
