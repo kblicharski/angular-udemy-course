@@ -11,6 +11,10 @@ export class ShoppingListService {
   ingredientsChanged: Subject<Ingredient[]> = new Subject<Ingredient[]>();
   startedEditing: Subject<number> = new Subject<number>();
 
+  getIngredient(index: number) {
+    return this.ingredients[index];
+  }
+
   getIngredients() {
     return this.ingredients.slice();
   }
