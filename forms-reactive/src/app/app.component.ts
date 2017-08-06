@@ -23,14 +23,28 @@ export class AppComponent implements OnInit {
       'gender': new FormControl('male'),
       'hobbies': new FormArray([])
     });
-    this.signUpForm.valueChanges
-      .subscribe(value => console.log(value));
+    // this.signUpForm.valueChanges
+    //   .subscribe(value => console.log(value));
     this.signUpForm.statusChanges
       .subscribe(status => console.log(status));
+    // this.signUpForm.setValue({
+    //   'userData': {
+    //     'username': 'Max',
+    //     'email': 'max@test.com'
+    //   },
+    //   'gender': 'male',
+    //   'hobbies': []
+    // });
+    this.signUpForm.patchValue({
+      'userData': {
+        'username': 'Default'
+      }
+    });
   }
 
   onSubmit() {
     console.log(this.signUpForm);
+    this.signUpForm.reset({'gender': 'male'})
   }
 
   onAddHobby() {
