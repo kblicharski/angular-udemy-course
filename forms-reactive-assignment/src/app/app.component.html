@@ -37,9 +37,9 @@
             id="status"
             class="form-control"
             formControlName="status">
-            <option value="stable">Stable</option>
-            <option value="critical">Critical</option>
-            <option value="finished">Finished</option>
+            <option
+              *ngFor="let status of projectStatuses"
+              [value]="status">{{ status }}</option>
           </select>
         </div>
         <button class="btn btn-primary" type="submit">Submit</button>

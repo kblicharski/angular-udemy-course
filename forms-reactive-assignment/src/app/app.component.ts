@@ -9,12 +9,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class AppComponent implements OnInit {
   projectForm: FormGroup;
   forbiddenNames = ['Test', 'test'];
+  projectStatuses = ['stable', 'critical', 'finished'];
+  defaultProjectStatus = 'stable';
 
   ngOnInit() {
     this.projectForm = new FormGroup({
-      'projectName': new FormControl(null, Validators.required),
+      'projectName': new FormControl(null, [Validators.required, this.nameValidator.bind(this)]),
       'email': new FormControl(null, [Validators.required, Validators.email]),
-      'status': new FormControl('active')
+      'status': new FormControl(this.defaultProjectStatus)
     });
   }
 
@@ -22,7 +24,10 @@ export class AppComponent implements OnInit {
     console.log(this.projectForm);
   }
 
-  nameValidator() {
-
+  nameValidator(control: FormControl): {[s: string]: boolean} {
+    if (this.forbiddenNames.includes(control.value)) {
+      return {'forbiddenName': true};
+    }
+    return null;
   }
 }
