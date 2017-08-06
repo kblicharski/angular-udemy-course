@@ -43,7 +43,7 @@
             type="button" [disabled]="!editMode" (click)="deleteItem()">Delete</button>
           <button
             class="btn btn-primary"
-            type="button" (click)="clearForm(f)">Clear</button>
+            type="button" [disabled]="f.pristine" (click)="clearForm(f)">Clear</button>
         </div>
       </div>
     </form>
