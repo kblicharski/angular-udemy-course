@@ -12,9 +12,6 @@
             required
             ngModel
             #name="ngModel">
-            <span class="help-message" *ngIf="name.invalid && name.touched">
-              Please enter a name.
-            </span>
         </div>
         <div class="col-sm-2 form-group">
           <label for="amount">Amount</label>
@@ -27,9 +24,6 @@
             min="1"
             ngModel
             #amount="ngModel">
-            <span class="help-message" *ngIf="amount.invalid && amount.touched">
-              Please enter an amount.
-            </span>
         </div>
       </div>
       <div class="row">
@@ -40,10 +34,10 @@
             [disabled]="f.invalid">{{ editMode ? 'Update' : 'Add' }}</button>
           <button
             class="btn btn-danger"
-            type="button" [disabled]="!editMode" (click)="deleteItem()">Delete</button>
+            type="button" *ngIf="editMode" (click)="deleteItem()">Delete</button>
           <button
             class="btn btn-primary"
-            type="button" [disabled]="f.pristine" (click)="clearForm(f)">Clear</button>
+            type="button" [disabled]="f.pristine && !editMode" (click)="clearForm()">Clear</button>
         </div>
       </div>
     </form>
