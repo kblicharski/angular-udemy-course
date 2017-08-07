@@ -10,7 +10,7 @@ import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 export class RecipeEditComponent implements OnInit {
   id: number;
   editMode = false;
-  // recipeForm: FormGroup;
+  recipeForm: FormGroup;
 
   constructor(private route: ActivatedRoute) { }
 
@@ -21,13 +21,13 @@ export class RecipeEditComponent implements OnInit {
         this.editMode = params['id'] !== null;
       }
     );
-    //
-    // this.recipeForm = new FormGroup({
-    //   'recipeName': new FormControl(null, Validators.required),
-    //   'recipeDescription': new FormControl(null, Validators.required),
-    //   'recipeImageUrl': new FormControl(null),
+
+    this.recipeForm = new FormGroup({
+      'name': new FormControl(null, Validators.required),
+      'description': new FormControl(null, Validators.required),
+      'imagePath': new FormControl(null)
     //   'recipeIngredients': new FormArray([], Validators.required)
-    // })
+    })
   }
   //
   // addIngredient() {
@@ -35,14 +35,14 @@ export class RecipeEditComponent implements OnInit {
   //   // this must be casted or else you get an error
   //   (<FormArray>this.recipeForm.get('recipeIngredients')).push(control);
   // }
-  //
-  // onSubmit() {
-  //   console.log(this.recipeForm.value);
-  //   const value = this.recipeForm.value;
-  //   const name = value['recipeName'];
-  //   const description = value['recipeDescription'];
-  //   const url = value['recipeImageUrl'];
-  //   const ingredients = value['']
-  //   const recipe = new Recipe()
-  // }
+
+  onSubmit() {
+    console.log(this.recipeForm.value);
+    const value = this.recipeForm.value;
+    const name = value['name'];
+    const description = value['description'];
+    const url = value['imagePath'];
+    // const ingredients = value['']
+    // const recipe = new Recipe()
+  }
 }
