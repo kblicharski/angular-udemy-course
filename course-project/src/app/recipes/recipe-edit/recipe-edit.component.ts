@@ -49,7 +49,6 @@ export class RecipeEditComponent implements OnInit {
           );
         }
       }
-      console.table(recipeIngredients);
     }
 
     this.recipeForm = new FormGroup({
@@ -60,11 +59,14 @@ export class RecipeEditComponent implements OnInit {
     });
   }
 
-  // addIngredient() {
-  //   const control = new FormControl(null, Validators.required);
-  //   // this must be casted or else you get an error
-  //   (<FormArray>this.recipeForm.get('ingredients')).push(control);
-  // }
+  addIngredient() {
+    const control = new FormGroup({
+      'name': new FormControl(),
+      'amount': new FormControl()
+    });
+    // this must be casted or else you get an error
+    (<FormArray>this.recipeForm.get('ingredients')).push(control);
+  }
 
   onSubmit() {
     console.log(this.recipeForm.value);
