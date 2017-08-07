@@ -29,4 +29,8 @@ export class RecipeService {
   getRecipe(index: number) {
     return this.recipes[index];
   }
+
+  addRecipe(recipe: Recipe) {
+    this.recipes.push(recipe);
+  }
 }
