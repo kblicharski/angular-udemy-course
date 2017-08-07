@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -9,6 +10,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class RecipeEditComponent implements OnInit {
   id: number;
   editMode = false;
+  recipeForm: FormGroup;
 
   constructor(private route: ActivatedRoute) { }
 
@@ -18,6 +20,23 @@ export class RecipeEditComponent implements OnInit {
         this.id = +params['id'];
         this.editMode = params['id'] !== null;
       }
-    )
+    );
+
+    this.recipeForm = new FormGroup({
+      'recipeName': new FormControl(null, Validators.required),
+      'recipeDescription': new FormControl(null, Validators.required),
+      'recipeImageUrl': new FormControl(null),
+      'recipeIngredients': new FormArray([], Validators.required)
+    })
+  }
+
+  addIngredient() {
+    const control = new FormControl(null, Validators.required);
+    // this must be casted or else you get an error
+    (<FormArray>this.recipeForm.get('recipeIngredients')).push(control);
+  }
+
+  onSubmit() {
+    console.log(this.recipeForm.value);
   }
 }

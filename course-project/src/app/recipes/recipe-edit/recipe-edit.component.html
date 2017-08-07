@@ -3,28 +3,31 @@
     <form (ngSubmit)="onSubmit()" [formGroup]="recipeForm">
       <div class="form-group">
         <label for="recipeName">Name</label>
-        <input type="text" id="recipeName" formControlName="recipeName">
+        <input class="form-control" type="text" id="recipeName" formControlName="recipeName">
       </div>
       <div class="form-group">
         <label for="recipeDescription">Description</label>
-        <input type="text" id="recipeDescription" formControlName="recipeDescription">
+        <input class="form-control" type="text" id="recipeDescription" formControlName="recipeDescription">
       </div>
       <div class="form-group">
         <label for="recipeImageUrl">Image URL</label>
-        <input type="text" id="recipeImageUrl" formControlName="recipeImageUrl">
+        <input class="form-control" type="text" id="recipeImageUrl"
+               formControlName="recipeImageUrl">
       </div>
       <div formArrayName="recipeIngredients">
         <h4>Ingredients</h4>
-          <button
-            class="btn btn-default"
-            type="button"
-            (click)="addIngredient()">Add Ingredient</button>
-          <div
-            class="form-group"
-            *ngFor="let ingredient of recipeForm.get('ingredients').controls; let i = index">
-            <input type="text" class="form-control" [formControlName]="i">
-          </div>
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="addIngredient()">Add Ingredient</button>
+        <hr>
+        <div
+          class="form-group"
+          *ngFor="let ingredient of recipeForm.get('recipeIngredients').controls; let i = index">
+          <input type="text" class="form-control" [formControlName]="i">
+        </div>
        </div>
+      <button class="btn btn-success" type="submit" [disabled]="recipeForm.invalid">Add Recipe</button>
     </form>
   </div>
 </div>
