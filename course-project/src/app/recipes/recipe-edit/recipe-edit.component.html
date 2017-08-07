@@ -1,5 +1,30 @@
-<p>
-  recipe-edit works!
-  id: {{ id }}
-  editMode: {{ editMode }}
-</p>
+<div class="row">
+  <div class="col-xs-12">
+    <form (ngSubmit)="onSubmit()" [formGroup]="recipeForm">
+      <div class="form-group">
+        <label for="recipeName">Name</label>
+        <input type="text" id="recipeName" formControlName="recipeName">
+      </div>
+      <div class="form-group">
+        <label for="recipeDescription">Description</label>
+        <input type="text" id="recipeDescription" formControlName="recipeDescription">
+      </div>
+      <div class="form-group">
+        <label for="recipeImageUrl">Image URL</label>
+        <input type="text" id="recipeImageUrl" formControlName="recipeImageUrl">
+      </div>
+      <div formArrayName="recipeIngredients">
+        <h4>Ingredients</h4>
+          <button
+            class="btn btn-default"
+            type="button"
+            (click)="addIngredient()">Add Ingredient</button>
+          <div
+            class="form-group"
+            *ngFor="let ingredient of recipeForm.get('ingredients').controls; let i = index">
+            <input type="text" class="form-control" [formControlName]="i">
+          </div>
+       </div>
+    </form>
+  </div>
+</div>
