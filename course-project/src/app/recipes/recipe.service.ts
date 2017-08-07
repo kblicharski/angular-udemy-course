@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { Subject } from 'rxjs/Subject';
+
 import { Recipe } from './recipe.model';
 import { Ingredient } from 'app/shared/models/ingredient.model';
 import { ShoppingListService } from 'app/shopping-list/shopping-list.service';
@@ -15,6 +17,8 @@ export class RecipeService {
                'http://steamykitchen.com/wp-content/uploads/2011/04/miso-ramen-recipe-20971.jpg',
                 [new Ingredient('Noodles', 1), new Ingredient('Eggs', 2)])
   ];
+
+  recipesChanged: Subject<Recipe[]> = new Subject<Recipe[]>();
 
   constructor(private shoppingListService: ShoppingListService) { }
 
@@ -32,5 +36,11 @@ export class RecipeService {
 
   addRecipe(recipe: Recipe) {
     this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  updateRecipe(recipe: Recipe, index: number) {
+    this.recipes[index] = recipe;
+    this.recipesChanged.next(this.recipes.slice());
   }
 }

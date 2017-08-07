@@ -3,6 +3,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
 import { RecipeService } from 'app/recipes/recipe.service';
+import { Ingredient } from 'app/shared/models/ingredient.model';
+import { Recipe } from 'app/recipes/recipe.model';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -31,7 +33,7 @@ export class RecipeEditComponent implements OnInit {
     let recipeName = '';
     let recipeImagePath = '';
     let recipeDescription = '';
-    let recipeIngredients = new FormArray([]);
+    let recipeIngredients = new FormArray([], Validators.required);
 
     if (this.editMode) {
       const recipe = this.recipeService.getRecipe(this.id);
@@ -68,13 +70,28 @@ export class RecipeEditComponent implements OnInit {
     (<FormArray>this.recipeForm.get('ingredients')).push(control);
   }
 
+  removeIngredient() {
+
+  }
+
   onSubmit() {
     console.log(this.recipeForm.value);
-    // const value = this.recipeForm.value;
-    // const name = value['name'];
-    // const description = value['description'];
-    // const url = value['imagePath'];
-    // const ingredients = value['']
-    // const recipe = new Recipe()
+    const value = this.recipeForm.value;
+    const name = value['name'];
+    const description = value['description'];
+    const imagePath = value['imagePath'];
+    const ingredients = value['ingredients'];
+
+    let ingredientList = [];
+    for (let ingredient of ingredients) {
+      ingredientList.push(new Ingredient(ingredient['name'], ingredient['amount']));
+    }
+
+    const newRecipe = new Recipe(name, description, imagePath, ingredientList)
+    if (this.editMode) {
+      this.recipeService.updateRecipe(newRecipe, this.id);
+    } else {
+      this.recipeService.addRecipe(newRecipe);
+    }
   }
 }
