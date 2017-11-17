@@ -1,8 +1,8 @@
 class ComicBookCharacter {
   constructor(public alias: string,
-              public health: number,
-              public strength: number,
-              protected secretIdentity: string) {}
+    public health: number,
+    public strength: number,
+    protected secretIdentity: string) { }
 }
 
 class SuperHero extends ComicBookCharacter {

@@ -13,7 +13,7 @@ interface OptionalAttributes {
   strength?: number;
   insanity?: number;
 }
-interface ComicBookCharacter extends OptionalAttributes{
+interface ComicBookCharacter extends OptionalAttributes {
   secretIdentity?: string;
   alias: string;
   health: number;

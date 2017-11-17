@@ -8,7 +8,6 @@ let dazzler: SuperHero = {
   savesTheDay() { console.log(`GoodGuy ${this.powers}`); }
 };
 
-
 interface BadGuy {
   badDeeds: string[];
   getRandomBadDeed: () => string;
@@ -17,7 +16,7 @@ interface BadGuy {
 
 let badGuy: BadGuy = {
   badDeeds: ["farts on old people"],
-  getRandomBadDeed() {return this.badDeeds; },
+  getRandomBadDeed() { return this.badDeeds; },
   commitBadDeed() { console.log(`BadGuy ${this.getRandomBadDeed()}`); }
 };
 
