@@ -13,8 +13,8 @@ making this opionated.
     - Limit files to 400 lines of code.
     - Limit functions to 75 lines of code.
 - Character Limits
-    - Aim to limit code to 80 characters. 
-    - If needed, go up to 100. 
+    - Aim to limit code to 80 characters.
+    - If needed, go up to 100.
     - If inserting links, ignore line limits.
 
 # Naming
@@ -31,4 +31,3 @@ making this opionated.
     - For data services (named after nouns):
         - Suffix class names with what they are, e.g. MapService, GameComponent, etc.
         - If service names are verbs (e.g. "Logger") then it is not necessary to add a suffix.
-    - 
