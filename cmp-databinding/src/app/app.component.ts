@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ServerService } from './server.service';
+
 
 @Component({
   selector: 'app-root',
@@ -7,22 +9,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   serverElements = [];
-  newServerName = '';
-  newServerContent = '';
 
-  onAddServer() {
-    this.serverElements.push({
-      type: 'server',
-      name: this.newServerName,
-      content: this.newServerContent
-    });
+  constructor(private serverService: ServerService) {
+    this.serverElements = serverService.serverElements.slice();
   }
 
-  onAddBlueprint() {
-    this.serverElements.push({
-      type: 'blueprint',
-      name: this.newServerName,
-      content: this.newServerContent
-    });
+  getServerElements() {
+    this.serverElements = this.serverService.serverElements.slice();
   }
+
 }

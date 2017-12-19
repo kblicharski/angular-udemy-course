@@ -19,8 +19,22 @@ applications, or SPAs. These are called single-page because they consist of one
 HTML file. All of the content is dynamically rendered. This is much
 faster than fetching new data from a server for every page change -- loading a
 completely new HTML page. This results in a much better user experience, feeling
-almost like a mobile application, because the page never refreshes.
+almost like a mobile application, because the page never refreshes. Instead, new
+DOM elements are rendered at runtime.
 
+## Version Numbers?
+Angular 1 is AngularJS. AngularJS was one of the most popular JavaScript frameworks,
+and has been around for years.
+
+Angular 2 is a complete rewrite of AngularJS -- although they share the same name,
+they are different and incompatible frameworks. Now, instead of referring to Angular
+using version numbers, Google decided to re-brand it as just “Angular”.
+
+Angular 4, 5, and so on are major updates to Angular. Version 3 was skipped
+for internal reasons, to align version numbers with other Google projects.
+
+
+# TypeScript
 Angular is often used with TypeScript instead of vanilla JavaScript. Way back in
 1995 when Brendan Eich wrote JavaScript in 10 days, no thought was put into
 type safety or failing fast. Instead, the language was fitted with a number of
