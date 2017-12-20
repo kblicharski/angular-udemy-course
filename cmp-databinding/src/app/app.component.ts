@@ -8,10 +8,11 @@ import { ServerService } from './server.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  serverElements = [];
+  serverElements = [
+    {type: 'server', name: 'testserver', content: 'online'}
+  ];
 
   constructor(private serverService: ServerService) {
-    this.serverElements = serverService.serverElements.slice();
   }
 
   getServerElements() {

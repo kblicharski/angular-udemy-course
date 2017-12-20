@@ -6,7 +6,9 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./server-element.component.css']
 })
 export class ServerElementComponent {
-  @Input() type: 'server' | 'blueprint';
-  @Input() name: string;
-  @Input() content: string;
+  @Input() element: {
+    type: 'server' | 'blueprint',
+    name: string,
+    content: string
+  };
 }
