@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ServerService } from './server.service';
+import { Server } from './server';
 
 
 @Component({
@@ -8,15 +8,12 @@ import { ServerService } from './server.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  serverElements = [
-    {type: 'server', name: 'testserver', content: 'online'}
+  serverElements: Server[] = [
+    {type: 'server', name: 'testserver', content: 'testcontent'}
   ];
 
-  constructor(private serverService: ServerService) {
-  }
-
-  getServerElements() {
-    this.serverElements = this.serverService.serverElements.slice();
+  onServerAdded($event: Server) {
+    this.serverElements.push($event);
   }
 
 }
