@@ -89,6 +89,7 @@ DOM. HTML attributes might require other types, such as numbers or strings.
 
 This is cool, but what if we want to bind to custom properties of our own components?
 
+## Custom Property Binding
 By default, properties within a component cannot be bound from outside, even if they
 are public. This is a good thing -- it prevents us from accidentally binding to
 properties we did not intend. In order to mark a property as being bindable, we
@@ -172,7 +173,9 @@ Never mix the two, though. This will not work:
 ```
 
 # Event Binding - ( )
-What if we want to react to events?
+What if we want to react to events, or pass information from inside
+a component outside to other parent components?
+
 Using our button example, let’s add this property and corresponding method
 to `servers.component.ts`. 
 
@@ -213,7 +216,7 @@ onUpdateServerName(event: Event) {
 
 `$event` is a reserved keyword that sends metadata about
 the event we are binding to. For a click event, this might be the
-coordinates that were clicked, for example. In this case, input
+coordinates that were clicked, for example. In this case, the input element
 has a property called `value` which is the text that is typed inside
 the input form. 
 
@@ -221,8 +224,60 @@ the input form.
 type of `event.target`. This code will dynamically update the value of
 the `serverName` variable with each keystroke the user inputs.
 
+## Custom Event Binding
+As with custom property binding, where we had to define a property and then
+add the `@Input()` decorator, there is a similar pattern for custom event
+binding.
+
+Let's say we have an array of "Server" objects, and whenever the user clicks a
+button, we want to tell our parent component that it should add a "Server" to its
+array of servers.
+
+We first need to create an object that is responsible for "emitting" the events.
+This is done by creating an `EventEmitter` and adding the `@Output()` decorator.
+```
+@Output() serverCreated: EventEmitter<Server> = new EventEmitter<Server>();
+```
+
+The `EventEmitter` class is a generic object, expecting the type of the object it
+emits to be passed into the diamond brackets.
+
+After we have defined the `EventEmitter`, we can define a method that adds a server.
+```
+onAddServer() {
+    this.serverCreated.emit({
+        type: 'server',
+        name: this.newServerName,
+        content: this.newServerContent
+    });
+}
+```
+
+Then, when the user clicks a button, we can call this method.
+```
+<button (click)="onAddServer()">Add Server</button>
+```
+
+And in the parent component, as before, we can bind to this custom event.
+```
+<app-child (serverCreated)="onServerAdded($event)"></app-child>
+```
+
+... and manipulate the created server, passed in the `$event` argument.
+```
+onServerAdded($event: Server) {
+    this.serverElements.push($event);
+}
+```
+
+As with before, if we want to define an external alias for our `EventEmitter`,
+we can pass in the name as a string into the parentheses of the `@Output()` decorator.
+
 # Two-Way Binding - [( )]
-We can do this more concisely by using the `ngModel` directive from the `FormsModule`.
+Remember the first event binding example, where `serverName` was dynamically
+updated with each user keystroke? This is such as common pattern that Angular
+ships with a directive that does it for us - `ngModel`, part of the `FormsModule`.
+This allows us to accomplish the same effect as before, but much more concisely:
 
 ```
 <!-- servers.component.html -->

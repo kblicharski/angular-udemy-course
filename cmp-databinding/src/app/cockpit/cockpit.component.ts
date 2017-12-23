@@ -7,23 +7,22 @@ import { Server } from '../server';
   styleUrls: ['./cockpit.component.css']
 })
 export class CockpitComponent {
-  newServerName = '';
   newServerContent = '';
 
   @Output() serverCreated: EventEmitter<Server> = new EventEmitter<Server>();
 
-  onAddServer() {
+  onAddServer(nameInput: HTMLInputElement) {
     this.serverCreated.emit({
       type: 'server',
-      name: this.newServerName,
+      name: nameInput.value,
       content: this.newServerContent
     });
   }
 
-  onAddBlueprint() {
+  onAddBlueprint(nameInput: HTMLInputElement) {
     this.serverCreated.emit({
       type: 'blueprint',
-      name: this.newServerName,
+      name: nameInput.value,
       content: this.newServerContent
     });
   }
