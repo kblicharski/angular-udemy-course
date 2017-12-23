@@ -58,9 +58,7 @@ multi-line strings:
 ```
 @Component({
   selector: 'app-root',
-  template: `
-    <h3>Component Text</h3>
-  `
+  template: `<h3>Component Text</h3>`
 })
 ```
 
@@ -70,6 +68,105 @@ they should be in their own file.
 
 Note: After registering the class as a Component, we use the ES6 `export`
 keyword to export the class in order to import and use it in other files.
+
+# Directives
+Directives are instructions in the DOM. 
+Components are one type of directive - they are a directive with a template. 
+Directives can be selected in the same ways as components, but they usually use the
+attribute style as opposed to the element style.
+
+Directives are often prefixed with a `*`.
+The `*` means they are structural directives - they change the structure of the DOM.
+The other kind of directives are called attribute directives - they don’t add or
+remove elements, they just alter the element they were placed on.
+
+We can make custom directives, but some built-in directives are particularly useful. 
+
+## Built-In Directives
+`*ngIf` - Specifies conditional HTML code. 
+
+If the code is not visible on the website, it isn’t just hidden - it’s not there at all.
+When the condition is true, Angular adds it to the website,
+and when the condition is false, Angular removes it.
+This example will only display the text if the property `serverCreated` is true.
+```
+<p *ngIf="serverCreated"> Server was created, server name is {{ serverName }}</p>
+```
+
+`ngStyle` - Dynamically styles HTML elements.
+
+This example will color the background green if the server is online and red if the
+server is offline. We use property binding to correctly color the style, and `ngStyle`
+takes a JS object as its input.
+```
+<!-- .html -->
+<p [ngStyle]="{backgroundColor: getColor()}">Server is {{ getServerStatus() }}.</p>
+```
+
+```
+// .ts
+getColor() {return this.serverStatus === 'online' ? 'green' : 'red';}
+```
+
+`ngClass` - Dynamically adds or removes CSS classes, depending on a condition.
+
+This example will apply the appropriate CSS classes.
+```
+<p [ngStyle]="getTextColor()"
+   [ngClass]="{online: serverStatus === 'online', offline: serverStatus === 'offline'}">
+  {{ 'Server ' }} with ID {{ serverID }} is {{ getServerStatus() }}</p>
+```
+
+```
+.online {
+  color: white;
+}
+.offline {
+  font-size: 200%;
+  color: white;
+}
+```
+
+`*ngFor` - Adds HTML code by iterating over a container.
+
+This is mostly used when displaying lists.
+This example displays whatever code the selector `app-server` has in its template
+for every server in the `servers` array in `servers.component.ts`.
+This allows us to display a list of servers concisely in one line of HTML code.
+
+```
+<app-server *ngFor="let server of servers"></app-server>
+```
+
+If you have an array like ```[1, 2, 3, ... ]``` and you want to display them,
+you can use the let variable that is declared, along with string interpolation,
+to output it directly.
+
+```
+<div *ngFor="let item of array_of_items">{{ item }}</div>
+```
+
+You can combine `*ngFor` with `ngClass` and `ngStyle` as well.
+If you want to style the 5th and greater items with a blue background and white text,
+you can do it using this syntax:
+
+```
+<div
+  *ngFor="let item of array_of_items"
+  [ngStyle]="{backgroundColor: item >= 5 ? 'blue' : 'transparent'}"
+  [ngClass]="{whiteText: item >= 5}"
+>{{ item }}</div>
+```
+
+What if you want to do this, but your array is not conveniently storing the
+number of each item? `*ngFor` has a built in index variable:
+
+```
+<div *ngFor="let item of array_of_items; let i = index"
+   [ngStyle]="{backgroundColor: index >= 4 ? 'blue' : 'transparent'}"
+   [ngClass]="{whiteText: index >= 4}"
+>{{ item }}</div>
+```
 
 # Data Binding
 Data binding represents the interface between the TypeScript code
@@ -566,10 +663,13 @@ The same functionality above can be implemented in the following way, with prope
 <div class="row">
   <div class="col-xs-12">
     <app-server-element *ngFor="let element of serverElements">
-      <p>
-        <strong *ngIf="element.type === 'server'" style="color: red;">{{ element.content }}</strong>
-        <em *ngIf="element.type === 'blueprint'">{{ element.content }}</em>
-      </p> 
+      <div class="panel-heading">{{ element.name }}</div>
+      <div class="panel-body">
+        <p>
+          <strong *ngIf="element.type === 'server'" style="color: red;">{{ element.content }}</strong>
+          <em *ngIf="element.type === 'blueprint'">{{ element.content }}</em>
+        </p>
+      </div>
     </app-server-element>
   </div>
 </div>
@@ -577,15 +677,123 @@ The same functionality above can be implemented in the following way, with prope
 ```
 <!--child.component.html-->
 <div class="panel panel-default">
-  <div class="panel-heading">{{ element.name }}</div>
-  <div class="panel-body">
-    <ng-content></ng-content>
-  </div>
+  <ng-content></ng-content>
 </div>
 ```
 
 Note that this is not the default behavior of Angular. By default, if you place ANY
 content between the opening and closing diamond brackets of a custom element, it is
 thrown away. If you want to use the content "inside" your custom element, you must
-include a `ng-content` hook for it to be placed in.
+provide a hook by including the `ng-content` tag inside the custom child element.
 
+# The Component Lifecycle
+When you create a new component using the CLI, it automatically generates an `ngOnInit()` method.
+What is this method responsible for?
+
+```
+import { Component, OnInit } from ‘@angular/core’;
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnInit {
+
+  constructor() { }
+  
+  ngOnInit() { }
+
+}
+```
+
+`OnInit` is a lifecycle hook. All lifecycle hooks have their own interface that you should implement
+if you decide to use them for a particular component.
+
+Whenever a new component is instantiated, Angular goes through a number of phases, giving us a chance
+to execute code at particular times during the instantiation.
+
+1. `ngOnChanges` - Executed multiple times; upon creation, and whenever bound input properties, i.e.
+properties with the `@Input()` decorator, change and receive new values.
+2. `ngOnInit` - Executed when the component is initialized. This doesn't mean we can see the component
+in the view, but we can access properties and initialize them once this method finishes -- the "object" was created. Note that
+`ngOnInit` runs after the constructor is finished, and after the first execution of `ngOnChanges`. 
+Consider why it might be necessary to have an additional "initialization" method on a component.
+For more information, [click here.](https://stackoverflow.com/questions/35763730/difference-between-constructor-and-ngoninit)
+3. `ngDoCheck` - Executes whenever change detection runs, i.e. a lot! "Change detection" is the system by
+which Angular determines if something changed inside the component (based on certain triggers, such as
+an observable being resolved or a button being clicked), so that it should update the
+template accordingly. This happens whether or not anything changed -- for example, you could click a 
+button that does nothing, and `ngDoCheck` would still fire. It has to fire, because what if something changed?
+It has no way of knowing, and as such ends up being spammed a lot. This sounds horribly inefficient, but
+it's actually fairly well optimized.
+4. `ngAfterContentInit` - This lifecycle hook relates to the content projection we just discussed. This
+is fired whenever the content we defined in our parent component is passed into the child component and
+replaces the `<ng-content></ng-content>` tags and becomes viewable.
+5. `ngAfterContentChecked` - This is called whenever change detection checks our projected content.
+6. `ngAfterViewInit` - Called after the component's view (and all of its child views!) have been initialized
+and rendered to the screen. Now all of the template content is filled and viewable.
+7. `ngAfterViewChecked` - Similarly to `ngAfterContentChecked`, this hook is called every time the view
+and all of the child views have been checked by change detection.
+8. `ngOnDestroy` - Called whenever a component is deleted, for example if you used `*ngIf` and the condition
+is suddenly set to false after being true. This is a good place to do clean-up, like clearing subscriptions
+to prevent memory leaks.
+
+These are **a lot** of hooks, and it is easy to feel overwhelmed. In practice, we mostly just use
+`ngOnInit` for calling component methods on initialization and `ngOnDestroy` for clearing subscriptions.
+In more rare cases, we use the other "onInit" methods, but the remaining hooks are
+reserved for more advanced use-cases.
+
+Some important footnotes to remember:
+- `ngDoCheck` is a great place to "tell" Angular about something it couldn't recognize by itself during change detection.
+Changing something manually is a rare use-case, but is worth remembering if it is necessary.
+You should avoid running expensive code here though, because as mentioned above `ngDoCheck` gets called **a lot**.
+- `ngOnChanges` is the only method that takes a parameter, a `SimpleChanges` object (also from @angular/core).
+This object contains useful metadata about the changes that were made, like the current value, previous value,
+whether this is the first change, etc.
+- `ngAfterViewInit` marks the point where you can access content on your template, for example using a
+`@ViewChild()` element reference. Before this point, all attempts to access content will return as empty.
+
+# Another Decorator - @ContentChild()
+The final important decorator (for components at least!) is `@ContentChild()`. This has the same functionality
+as `@ViewChild()`, but allows us to get the content of an `<ng-content>` tag instead. Also, similarly to
+`ngAfterViewInit`, this content is only accessible after `ngAfterContentInit` has been called.
+
+Its usage is very similar:
+```
+<!--parent.component.html-->
+<div class="row">
+  <div class="col-xs-12">
+    <app-server-element *ngFor="let element of serverElements">
+      <div class="panel-heading">{{ element.name }}</div>
+      <div class="panel-body">
+        <p #contentParagraph>
+          <strong *ngIf="element.type === 'server'" style="color: red;">{{ element.content }}</strong>
+          <em *ngIf="element.type === 'blueprint'">{{ element.content }}</em>
+        </p>
+      </div>
+    </app-server-element>
+  </div>
+</div>
+```
+```
+<!--child.component.html-->
+<div class="panel panel-default">
+  <ng-content></ng-content>
+</div>
+```
+```
+import { Component, ElementRef, ContentChild } from '@angular/core';
+@Component({
+  selector: 'app-child',
+  templateUrl: './child.component.html',
+  styleUrls: ['./child.component.css']
+})
+export class ChildComponent {
+  @ContentChild('contentParagraph') paragraph: ElementRef;
+}
+```
+
+The purpose is the same: getting access to elements of a particular template. However, now we must
+define the local reference in the parent's template, where the content projection is defined, instead
+of in the child component's template.
