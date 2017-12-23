@@ -111,6 +111,7 @@ ENTIRE HTML element, and must access its properties as such, e.g. `serverInput.v
 Old Method:
 ```
 <input type="text" class="form-control" [(ngModel)]="newServerName">
+<input type="text" class="form-control" [(ngModel)]="newServerContent">
 <button class="btn btn-primary" (click)="onAddServer()">Add Server</button>
 ```
 ```
@@ -134,11 +135,13 @@ export class CockpitComponent {
       content: this.newServerContent
     });
   }
+}
 ```
 
 New Method:
 ```
 <input type="text" class="form-control" #serverNameInput> 
+<input type="text" class="form-control" [(ngModel)]="newServerContent">
 <button class="btn btn-primary" (click)="onAddServer(serverNameInput)">Add Server</button>
 ```
 ```
@@ -161,6 +164,7 @@ export class CockpitComponent {
       content: this.newServerContent
     });
   }
+}
 ```
 
 # Using @ViewChild
@@ -169,4 +173,41 @@ Right now, we are passing the reference whenever we call a method upon a button 
 However, what if we wanted to get access before any method is called?
 
 We can programmatically define HTML references in our TypeScript file by using the
-`@ViewChild()` decorator provided by Angular. 
+`@ViewChild()` decorator provided by Angular. The only difference from the previous
+decorators we have used, is that this one requires a string as an input. This string is
+the name of the reference we defined in our template. This is a way of getting access to an
+element reference directly; as such, the type provided by `@ViewChild()` is an `ElementRef`.
+
+```
+<input type="text" class="form-control" #serverNameInput> 
+<input type="text" class="form-control" #serverContentInput>
+<button class="btn btn-primary" (click)="onAddServer(serverNameInput)">Add Server</button>
+```
+```
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Server } from '../server';
+
+@Component({
+  selector: 'app-cockpit',
+  templateUrl: './cockpit.component.html',
+  styleUrls: ['./cockpit.component.css']
+})
+export class CockpitComponent {
+  @ViewChild('serverContentInput') contentInput: ElementRef;
+
+  @Output() serverCreated: EventEmitter<Server> = new EventEmitter<Server>();
+
+  onAddServer(nameInput: HTMLInputElement) {
+    this.serverCreated.emit({
+      type: 'server',
+      name: nameInput.value,
+      content: this.contentInput.nativeElement.value
+    });
+  }
+}
+```
+
+The `ElementRef` has a `nativeElement` property, which is just the HTML element we expected,
+e.g. `HTMLInputElement` like in the local reference method.
+In this way, we can directly access values in our template without having to pass them
+around in methods.
