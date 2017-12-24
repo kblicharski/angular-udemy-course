@@ -21,7 +21,7 @@
   <hr>
   <app-game-control (increment)="addNumComponent($event)"></app-game-control>
   <div *ngFor="let component of numComponents">
-    <app-odd *ngIf="component % 2 == 1"></app-odd>
-    <app-even *ngIf="component % 2 == 0"></app-even>
+    <app-odd *ngIf="component % 2 == 1" [num]="component"></app-odd>
+    <app-even *ngIf="component % 2 == 0" [num]="component"></app-even>
   </div>
 </div>

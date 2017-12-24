@@ -6,10 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  numComponents = [];
+  numComponents: number[] = [];
 
   addNumComponent($event: number) {
-      this.numComponents.push($event);
+    this.numComponents.push($event);
   }
 
 }

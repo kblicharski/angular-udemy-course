@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { setInterval } from 'timers';
-import Timer = NodeJS.Timer;
 
 @Component({
   selector: 'app-game-control',
@@ -8,9 +6,9 @@ import Timer = NodeJS.Timer;
   styleUrls: ['./game-control.component.css']
 })
 export class GameControlComponent {
-  private ref: Timer;
+  private ref: number;
   private num = 0;
-  @Output() increment: EventEmitter<number> = new EventEmitter<number>();
+  @Output() increment = new EventEmitter<number>();
 
   onStopGame() {
     clearInterval(this.ref);
