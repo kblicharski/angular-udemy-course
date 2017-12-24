@@ -409,3 +409,18 @@ Now in order to use the new directive, it's as simple as before, with opposite b
   <p>Example of conditional content.</p>
 </div>
 ```
+
+# ngSwitch
+If you have a single bound property, and want to display different content based
+on the value of that property, e.g. error messages, then `ngSwitch` is a more elegant
+solution than having multiple `*ngIf` statements.
+
+```
+<div [ngSwitch]="value">
+  <p *ngSwitchCase="1">Case 1</p>
+  <p *ngSwitchCase="2">Case 2</p>
+  <p *ngSwitchCase="3">Case 3</p>
+  <p *ngSwitchCase="4">Case 4</p>
+  <p *ngSwitchDefault>The default switch case.</p>
+</div>
+```
