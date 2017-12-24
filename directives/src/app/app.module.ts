@@ -10,6 +10,7 @@ import { BetterHighlightDirective } from './better-highlight.directive';
 import { EvenBetterHighlightDirective } from './even-better-highlight.directive';
 import { DynamicHighlightDirective } from './dynamic-highlight.directive';
 import { ReusableHighlightDirective } from './reusable-highlight.directive';
+import { NgIfNotDirective } from './ng-if-not.directive';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ReusableHighlightDirective } from './reusable-highlight.directive';
     EvenBetterHighlightDirective,
     BestHighlightDirective,
     DynamicHighlightDirective,
-    ReusableHighlightDirective
+    ReusableHighlightDirective,
+    NgIfNotDirective
   ],
   imports: [
     BrowserModule,

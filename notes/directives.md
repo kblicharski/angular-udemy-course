@@ -339,3 +339,73 @@ custom defined Angular properties when using this syntax. For this reason,
 it might be better to be consistently explicit and include the square brackets.
 
 # More on Structural Directives
+You might have wondered, when we include a structural directive, why do we need
+to include the `*`? The reason is that it serves a special, important purpose.
+
+The `*` is syntactical sugar that allows Angular to extract our structural directive
+shorthand into its "true" form. Behind the scenes, structural directives are a lot uglier.
+
+Here's a basic example.
+```
+<div *ngIf="someExpression">
+  <p>Example of conditional content.</p>
+</div>
+```
+
+What does this "actually" look like?
+```
+<ng-template [ngIf]="someExpression">
+  <div>
+    <p>Example of conditional content.</p>
+  </div>
+</ng-template>
+```
+
+These two are functionally equivalent. Because using a structural directive is
+so common and important, Angular ships with this special shorthand.
+
+# Custom Structural Directives
+Now that we understand what structural directives are really doing, we can
+make our own. This is a much more complicated use-case, but for a simple example,
+let's make the opposite of `*ngIf` -- something that renders only if its expression
+evaluates to false.
+
+This is the code:
+```
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+
+@Directive({
+  selector: '[ngIfNot]'
+})
+export class NgIfNotDirective {
+  @Input('ngIfNot')
+  set condition(expression: boolean) {
+    if (!expression) {
+      this.viewContainerRef.createEmbeddedView(this.templateRef);
+    } else {
+      this.viewContainerRef.clear();
+    }
+  }
+
+  constructor(
+    private templateRef: TemplateRef<any>,
+    private viewContainerRef: ViewContainerRef
+  ) { }
+
+}
+```
+
+What is happening here? We simply get a reference to the `ng-template` our
+structural directive "actually" sits on, and then add it to the view whenever
+the passed expression is false.
+
+We are using a TypeScript setter to allow this functionality whenever the condition
+changes. Note that `condition` is still a property of `NgIfNotDirective`; the method
+is just TypeScript shorthand because it is such a common pattern.
+
+Now in order to use the new directive, it's as simple as before, with opposite behavior:
+```
+<div *ngIfNot="someExpression">
+  <p>Example of conditional content.</p>
+</div>
+```
