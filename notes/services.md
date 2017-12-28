@@ -36,10 +36,6 @@ From what you have learned thus far about components and directives, you might
 think that Angular has some sort of `@Service()` decorator that we define on a class.
 This isn't the case; as with models, services are just normal TypeScript classes. 
 
-However, there IS a decorator we must use -- `@Injectable()`. This tells Angular
-that we can use *dependency injection* with the class -- i.e. passing it into a
-component's constructor and getting access to its data and methods.
-
 Here is an example implementation of a service used to log data to the console:
 ```
 import { Injectable } from '@angular/core';
@@ -55,6 +51,8 @@ export class LoggerService {
   
 }
 ```
+Note: `@Injectable()` is used (and explained later), but the service will work
+just as well without the decorator.
 
 So now that you have defined a service, how do you use it? You might expect that
 we follow the same pattern we're used to -- import the service, create an instance
@@ -93,9 +91,7 @@ the `logChange` method will also be called and log the message to the console.
 
 However, this is incorrect. Angular provides a much better way of doing this --
 as mentioned, this is called *dependency injection*, and allows us to eliminate
-the overhead of constantly having to create new object instances. This is why
-we use the `@Injectable()` decorator in the first place -- otherwise, we would
-have to use the above approach.
+the overhead of constantly having to create new object instances. 
 
 So how do we actually use dependency injection?
 
@@ -205,7 +201,13 @@ needed application-wide, but just for a component and its child components.
 ## Services in Services
 We can even inject services into other services. Note, because a service does not
 have a providers array, we must provide the injected service in `app.module`
-
 This allows us to extend services very easily.
 
+Note, this is the purpose behind the `@Injectable()` decorator -- it tells Angular
+that the service the decorator sits on can have other services injected into it.
+Angular needs some sort of metadata for dependency injection to work. Normally,
+this is provided with the `@Component()` decorator -- services are just regular
+classes, so need their own custom decorator.
 
+Note: You put `@Injectable()` on the service you are injecting INTO, not on the
+service that is being injected.
