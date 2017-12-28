@@ -211,3 +211,103 @@ classes, so need their own custom decorator.
 
 Note: You put `@Injectable()` on the service you are injecting INTO, not on the
 service that is being injected.
+
+## Communication via Services
+Just as services can store data and implement behavior, they can also allow for
+emitting events.
+
+Just as before, all we have to do is define the `EventEmitter` in our service,
+and then when we want to use it, we can call it in a component on our injected service.
+Then, for whatever other component we want to modify upon this event, we just
+subscribe to the emitted event.
+
+If `account.component` wants to talk to `new-account.component`, we can implement
+it like so:
+
+```
+import { EventEmitter, Injectable } from '@angular/core';
+  
+import { Account } from './account';
+import { LoggerService } from './logger.service';
+  
+@Injectable()
+export class AccountService {
+  
+  accounts: Account[] = [
+    {name: 'Master Account', status: 'active'},
+    {name: 'Test Account', status: 'inactive'},
+    {name: 'Hidden Account', status: 'unknown'}
+  ];
+  
+  statusUpdated: EventEmitter<string> = new EventEmitter<string>();
+  
+  constructor(private loggerService: LoggerService) {}
+  
+  addAccount(name: string, status: string): void {
+    this.accounts.push({name: name, status: status});
+    this.loggerService.logChange('New server with status: ' + status);
+  }
+  
+  updateStatus(id: number, newStatus: string): void {
+    this.accounts[id].status = newStatus;
+    this.loggerService.logChange('Server status updated: ' + newStatus);
+  }
+  
+}
+```
+
+```
+import { Component, Input } from '@angular/core';
+  
+import { Account } from '../account';
+import { AccountService } from '../account.service';
+  
+@Component({
+  selector: 'app-account',
+  templateUrl: './account.component.html',
+  styleUrls: ['./account.component.css']
+})
+export class AccountComponent {
+  
+  @Input() account: Account;
+  @Input() id: number;
+  
+  constructor(private accountService: AccountService) {}
+  
+  onSetTo(status: string): void {
+    this.accountService.statusUpdated.emit(status);
+    this.accountService.updateStatus(this.id, status);
+  }
+  
+}
+```
+
+
+```
+import { Component, OnInit } from '@angular/core';
+  
+import { AccountService } from '../account.service';
+  
+@Component({
+  selector: 'app-new-account',
+  templateUrl: './new-account.component.html',
+  styleUrls: ['./new-account.component.css']
+})
+export class NewAccountComponent implements OnInit {
+  
+  constructor(private accountService: AccountService) {}
+  
+  ngOnInit(): void {
+    this.accountService.statusUpdated.subscribe(
+      (status: string) => alert('New Status: ' + status)
+    );
+  }
+  
+  onCreateAccount(accountName: string, accountStatus: string) {
+    this.accountService.addAccount(accountName, accountStatus);
+  }
+  
+}
+```
+
+This pattern can save us a lot of time, since it removes the need for input/output chains.
