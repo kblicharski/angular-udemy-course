@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 import { AccountService } from '../account.service';
-import { LoggerService } from '../logger.service';
 
 @Component({
   selector: 'app-new-account',
@@ -10,14 +9,10 @@ import { LoggerService } from '../logger.service';
 })
 export class NewAccountComponent {
 
-  constructor(
-    private loggerService: LoggerService,
-    private accountService: AccountService
-  ) {}
+  constructor(private accountService: AccountService) {}
 
   onCreateAccount(accountName: string, accountStatus: string) {
     this.accountService.addAccount(accountName, accountStatus);
-    this.loggerService.logChange('New server status: ' + accountStatus);
   }
 
 }

@@ -202,5 +202,10 @@ However, note that the encapsulation behavior of providing services on particula
 components could be useful in special circumstances when data or behavior is not
 needed application-wide, but just for a component and its child components.
 
+## Services in Services
+We can even inject services into other services. Note, because a service does not
+have a providers array, we must provide the injected service in `app.module`
+
+This allows us to extend services very easily.
 
 

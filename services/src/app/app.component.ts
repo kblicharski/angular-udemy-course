@@ -15,10 +15,6 @@ export class AppComponent implements OnInit {
   constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
-    this.fetchAccounts();
-  }
-
-  private fetchAccounts(): void {
     this.accounts = this.accountService.accounts;
   }
 
