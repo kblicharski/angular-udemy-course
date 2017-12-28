@@ -311,3 +311,75 @@ export class NewAccountComponent implements OnInit {
 ```
 
 This pattern can save us a lot of time, since it removes the need for input/output chains.
+What if we wanted to practice immutability (like we should!), and instead of relying
+on array references, got copies of the array instead?
+
+With this example, we would simply need to inform our components whenever our
+array of accounts had new information.
+
+```
+import { EventEmitter, Injectable } from '@angular/core';
+  
+import { Account } from './account';
+import { LoggerService } from './logger.service';
+  
+@Injectable()
+export class AccountService {
+  
+  private _accounts: Account[] = [
+    {name: 'Master Account', status: 'active'},
+    {name: 'Test Account', status: 'inactive'},
+    {name: 'Hidden Account', status: 'unknown'}
+  ];
+  
+  get accounts(): Account[] {
+    return this._accounts.slice();
+  }
+  
+  statusUpdated: EventEmitter<string> = new EventEmitter<string>();
+  
+  accountsChanged: EventEmitter<Account[]> = new EventEmitter<Account[]>();
+  
+  constructor(private loggerService: LoggerService) {}
+  
+  addAccount(name: string, status: string): void {
+    this._accounts.push({name: name, status: status});
+    this.loggerService.logChange('New server with status: ' + status);
+    this.accountsChanged.emit(this._accounts);
+  }
+  
+  updateStatus(id: number, newStatus: string): void {
+    this._accounts[id].status = newStatus;
+    this.loggerService.logChange('Server status updated: ' + newStatus);
+    this.accountsChanged.emit(this._accounts);
+  }
+  
+}
+```
+
+```
+import { Component, OnInit } from '@angular/core';
+  
+import { Account } from './account';
+import { AccountService } from './account.service';
+  
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnInit {
+  
+  accounts: Account[] = [];
+  
+  constructor(private accountService: AccountService) {}
+  
+  ngOnInit(): void {
+    this.accounts = this.accountService.accounts;
+    this.accountService.accountsChanged.subscribe(
+      (accounts: Account[]) => this.accounts = accounts
+    )
+  }
+  
+}
+```

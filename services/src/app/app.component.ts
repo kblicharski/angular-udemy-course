@@ -16,6 +16,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.accounts = this.accountService.accounts;
+    this.accountService.accountsChanged.subscribe(
+      (accounts: Account[]) => this.accounts = accounts
+    )
   }
 
 }
