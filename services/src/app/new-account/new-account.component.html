@@ -5,7 +5,8 @@
       <input
         type="text"
         class="form-control"
-        #accountName>
+        #accountName
+      >
     </div>
     <div class="form-group">
       <select class="form-control" #status>
@@ -16,8 +17,8 @@
     </div>
     <button
       class="btn btn-primary"
-      (click)="onCreateAccount(accountName.value, status.value)">
-      Add Account
+      (click)="onCreateAccount(accountName.value, status.value)"
+    >Add Account
     </button>
   </div>
 </div>

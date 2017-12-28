@@ -1,6 +1,6 @@
 # Services and Dependency Injection
-Services are a super important part of Angular. They can be used as a
- better way of managing and passing around complex state information about your application.
+Services are a super important part of Angular. They can be used as a better
+way of managing and passing around complex state information about your application.
 
 Recall that we can use the `@Input()` and `@Output()` decorators to pass information
 between components. If we have heavily nested components, this can lead to extremely
@@ -36,4 +36,171 @@ From what you have learned thus far about components and directives, you might
 think that Angular has some sort of `@Service()` decorator that we define on a class.
 This isn't the case; as with models, services are just normal TypeScript classes. 
 
-However, there IS a decorator we must use -- `@Injectable()`.
+However, there IS a decorator we must use -- `@Injectable()`. This tells Angular
+that we can use *dependency injection* with the class -- i.e. passing it into a
+component's constructor and getting access to its data and methods.
+
+Here is an example implementation of a service used to log data to the console:
+```
+import { Injectable } from '@angular/core';
+  
+@Injectable()
+export class LoggerService {
+  
+  constructor() { }
+  
+  logChange(change: string): void {
+    console.log(change);
+  }
+  
+}
+```
+
+So now that you have defined a service, how do you use it? You might expect that
+we follow the same pattern we're used to -- import the service, create an instance
+of the service, and then call the methods on the instance.
+
+This might look something like the following:
+
+```
+import { Component, EventEmitter, Output } from '@angular/core';
+  
+import { LoggerService } from '../logging.service';
+  
+@Component({
+  selector: 'app-new-account',
+  templateUrl: './new-account.component.html',
+  styleUrls: ['./new-account.component.css']
+})
+export class NewAccountComponent {
+  @Output() accountAdded = new EventEmitter<{name: string, status: string}>();
+  
+  onCreateAccount(accountName: string, accountStatus: string) {
+    this.accountAdded.emit({
+      name: accountName,
+      status: accountStatus
+    });
+    const service = new LoggerService();
+    service.logChange('A server status changed, new status: ' + accountStatus);
+    // console.log('A server status changed, new status: ' + accountStatus);
+  }
+  
+}
+```
+
+This would work as expected -- every time the method `onCreateAccount` is called,
+the `logChange` method will also be called and log the message to the console.
+
+However, this is incorrect. Angular provides a much better way of doing this --
+as mentioned, this is called *dependency injection*, and allows us to eliminate
+the overhead of constantly having to create new object instances. This is why
+we use the `@Injectable()` decorator in the first place -- otherwise, we would
+have to use the above approach.
+
+So how do we actually use dependency injection?
+
+In the `app.module.ts` file, there is an array called `providers`. This array
+actually exists on all of our components as well, as an optional property on the
+metadata that we pass to the `@Component()` decorator. First we have to "provide"
+our service by recording it in one of these locations, and then we can "inject"
+it by passing it to our component's constructor.
+
+For more information about providers, [click here](https://stackoverflow.com/questions/37867503/what-are-providers-in-angular2).
+
+For example:
+
+```
+import { Component, EventEmitter, Output } from '@angular/core';
+  
+import { LoggerService } from '../logger.service';
+  
+@Component({
+  selector: 'app-new-account',
+  templateUrl: './new-account.component.html',
+  styleUrls: ['./new-account.component.css'],
+  providers: [LoggerService]
+})
+export class NewAccountComponent {
+  @Output() accountAdded = new EventEmitter<{ name: string, status: string }>();
+  
+  constructor(private loggerService: LoggerService) {}
+  
+  onCreateAccount(accountName: string, accountStatus: string) {
+    this.accountAdded.emit({
+      name: accountName,
+      status: accountStatus
+    });
+    this.loggerService.logChange('A server status changed, new status: ' + accountStatus);
+  }
+  
+}
+```
+Note: The type that we specify in the constructor is not optional -- it is required
+for Angular to know what service to inject.
+
+This is the way you are actually meant to use services. In fact, in Angular,
+the only purpose of a component's constructor should be to inject the needed
+dependencies. All of the initialization should take place in the `ngOnInit` method.
+
+So why are there multiple `providers` array locations? The place we "provide" our
+service determines where we are allowed to "inject" it from. If we provide it
+on a component, it will be available for that component and all nested child components.
+
+If we provide it in a module, it will be available for all of the components
+declared within that module. So, if we wanted a global service, we should register
+it in the `app.component.ts`'s `providers` array.
+
+# Creating Services - An Example Data Service
+Before, if we wanted to pass data around an application, we needed to chain
+`@Input()` and `@Output()` calls between components.
+
+Now, it's as simple as storing the data in a service.
+For example, with our accounts app:
+
+```
+import { Injectable } from '@angular/core';
+
+import { Account } from './account';
+
+@Injectable()
+export class AccountService {
+
+  accounts: Account[] = [
+    {name: 'Master Account', status: 'active'},
+    {name: 'Testaccount', status: 'inactive'},
+    {name: 'Hidden Account', status: 'unknown'}
+  ];
+
+  addAccount(name: string, status: string): void {
+    this.accounts.push({name: name, status: status});
+  }
+
+  updateStatus(id: number, newStatus: string): void {
+    this.accounts[id].status = newStatus;
+  }
+
+}
+```
+This service also contains two methods that allow us to manipulate the data.
+Now, whenever we want to gain access to the accounts array, we can do so through
+this well-defined API. Whereas before, we would have to emit events containing
+account data, and passing them up to the `app.component` (which used to contain)
+the accounts, now we just inject the `AccountService` and call the methods it
+contains with the data:
+
+Note: There is a super important caveat here (when working with data services),
+which has to deal with how `providers` works, and how dependency injection works.
+The place you provide a data service is REALLY important. If we just provide it
+on each component we want to use it, then in actuality, we are making a bunch of
+new instances of our `AccountService`, each with its own array of accounts!
+
+For data services, especially services that manage application-wide information,
+we usually mean to provide them in our `app.module`. This ensures that they are
+available application-wide -- i.e. our service will always be a singleton.
+
+However, note that the encapsulation behavior of providing services on particular
+components could be useful in special circumstances when data or behavior is not
+needed application-wide, but just for a component and its child components.
+
+
+
